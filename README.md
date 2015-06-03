@@ -8,5 +8,5 @@ This is *italics* and **bold**
 [My Website] (http://dataschool.io)
 ```python
 import pandas as pd
-pd.read.csv()
+pd.read_csv()
 ```
