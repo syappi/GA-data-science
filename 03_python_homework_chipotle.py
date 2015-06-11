@@ -45,23 +45,40 @@ for row in data:
     else:
         price = price + itemprice        
         
-        
-        
     orderlist.append(orderid)
     
     i = i+1
 
 avg = sum(priceperorder[1:])/len(priceperorder[1:])
 
-print 'The average price per order is $',avg
+print 'The average price per order is $',round(avg, 2)
 
 '''
 INTERMEDIATE LEVEL
 PART 4: Create a list (or set) of all unique sodas and soft drinks that they sell.
 Note: Just look for 'Canned Soda' and 'Canned Soft Drink', and ignore other drinks like 'Izze'.
 '''
+soda = []
+for row in data:
+    if row[2] =='Canned Soda':
+        soda.append(row[3])
+    else:
+        next
 
+soda = set(soda)
 
+print 'The list of unique sodas is the following:', soda
+
+soft = []
+for row in data:
+    if row[2] =='Canned Soft Drink':
+        soft.append(row[3])
+    else:
+        next
+
+soft = set(soft)
+
+print 'The list of unique soft drinks is the following:', soft
 
 '''
 ADVANCED LEVEL
@@ -69,8 +86,19 @@ PART 5: Calculate the average number of toppings per burrito.
 Note: Let's ignore the 'quantity' column to simplify this task.
 Hint: Think carefully about the easiest way to count the number of toppings!
 '''
+toplist= []
+j = 0
+for row in data:
+    item = row[2]
+    if item.find("Burrito") == -1:
+        next
+    else:
+        toppings = len(row[3].split(','))
+        toplist.append(toppings)
 
+avgtoppings = sum(toplist)/len(toplist)
 
+print 'The average number of toppings per burrito is',avgtoppings
 
 '''
 ADVANCED LEVEL
@@ -80,3 +108,15 @@ Expected output: {'Chips and Roasted Chili-Corn Salsa': 18, ... }
 Note: Please take the 'quantity' column into account!
 Optional: Learn how to use 'defaultdict' to simplify your code.
 '''
+chiplist = []
+for row in data:
+    item = row[2]
+    if item.find("Chips") == -1:
+        next
+    else:
+        chiplist.append((item,row[1]))
+
+from collections import defaultdict
+d = defaultdict(list)
+for k, v in chiplist:
+        d[k].append(v)
