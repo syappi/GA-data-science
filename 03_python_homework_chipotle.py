@@ -110,13 +110,23 @@ Optional: Learn how to use 'defaultdict' to simplify your code.
 '''
 chiplist = []
 for row in data:
+    if row[2].find("Chips") == -1:
+        next
+    else:
+        chiplist.append(row[2])
+
+chiplist = set(chiplist)
+
+from collections import defaultdict
+d = defaultdict(list, zip(chiplist, [0,0,0,0,0,0,0,0,0,0,0]))
+
+for row in data:
     item = row[2]
+    n = int(row[1])
     if item.find("Chips") == -1:
         next
     else:
-        chiplist.append((item,row[1]))
+        d[item] = d[item] + n
 
-from collections import defaultdict
-d = defaultdict(list)
-for k, v in chiplist:
-        d[k].append(v)
+
+print 'The following is a dictionary representing chip orders and the respective total number of orders:', d
