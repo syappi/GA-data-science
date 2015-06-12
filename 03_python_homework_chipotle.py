@@ -39,7 +39,7 @@ for row in data:
     itemprice = float(p)/100
     
     if orderid > orderlist[i]:
-        priceperorder.append(price)        
+        priceperorder.append(round(price, 2))        
         price = itemprice
        
     else:
@@ -51,7 +51,8 @@ for row in data:
 
 avg = sum(priceperorder[1:])/len(priceperorder[1:])
 
-print 'The average price per order is $',round(avg, 2)
+print 'The average price per order is $',round(avg,2)
+    
 
 '''
 INTERMEDIATE LEVEL
