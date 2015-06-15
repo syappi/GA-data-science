@@ -63,23 +63,15 @@ soda = []
 for row in data:
     if row[2] =='Canned Soda':
         soda.append(row[3])
+    elif row[2] =='Canned Soft Drink':
+        soda.append(row[3])
     else:
         next
 
 soda = set(soda)
 
-print 'The list of unique sodas is the following:', soda
+print 'The list of unique sodas and soft drinks is the following:', soda
 
-soft = []
-for row in data:
-    if row[2] =='Canned Soft Drink':
-        soft.append(row[3])
-    else:
-        next
-
-soft = set(soft)
-
-print 'The list of unique soft drinks is the following:', soft
 
 '''
 ADVANCED LEVEL
@@ -97,7 +89,7 @@ for row in data:
         toppings = len(row[3].split(','))
         toplist.append(toppings)
 
-avgtoppings = sum(toplist)/len(toplist)
+avgtoppings = sum(toplist)/float(len(toplist))
 
 print 'The average number of toppings per burrito is',avgtoppings
 
@@ -108,18 +100,10 @@ PART 6: Create a dictionary in which the keys represent chip orders and
 Expected output: {'Chips and Roasted Chili-Corn Salsa': 18, ... }
 Note: Please take the 'quantity' column into account!
 Optional: Learn how to use 'defaultdict' to simplify your code.
-'''
-chiplist = []
-for row in data:
-    if row[2].find("Chips") == -1:
-        next
-    else:
-        chiplist.append(row[2])
-
-chiplist = set(chiplist)
+''' 
 
 from collections import defaultdict
-d = defaultdict(list, zip(chiplist, [0,0,0,0,0,0,0,0,0,0,0]))
+d = defaultdict(int)
 
 for row in data:
     item = row[2]
