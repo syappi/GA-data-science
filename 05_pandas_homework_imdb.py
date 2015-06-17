@@ -20,8 +20,8 @@ movies.duration.mean()
 
 # sort the DataFrame by duration to find the shortest and longest movies
 movies.sort('duration')
-print 'The longest movie is',list(movies.sort('duration').tail(1).title)
-print 'The shortest movie is',list(movies.sort('duration').head(1).title)
+print 'The longest movie is',movies.sort('duration').tail(1).title.values[0]
+print 'The shortest movie is',movies.sort('duration').head(1).title.values[0]
 
 '''
 INTERMEDIATE LEVEL
