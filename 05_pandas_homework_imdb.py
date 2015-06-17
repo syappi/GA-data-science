@@ -20,8 +20,8 @@ movies.duration.mean()
 
 # sort the DataFrame by duration to find the shortest and longest movies
 movies.sort('duration')
-print 'The longest movie is', movies.sort('duration').tail(1).title
-print 'The shortest movie is', movies.sort('duration').head(1).title
+print 'The longest movie is',list(movies.sort('duration').tail(1).title)
+print 'The shortest movie is',list(movies.sort('duration').head(1).title)
 
 '''
 INTERMEDIATE LEVEL
@@ -40,7 +40,7 @@ movies.content_rating.replace({'X': 'NC-17', 'TV-MA': 'NC-17'}, inplace = True)
 movies.isnull().sum()
 
 # if there are missing values: examine them, then fill them in with "reasonable" values
-movies.content_rating.fillna('UNRATED')
+movies.content_rating.fillna('UNRATED', inplace=True)
 
 # calculate the average star rating for movies 2 hours or longer,
 # and compare that with the average star rating for movies shorter than 2 hours
@@ -73,7 +73,8 @@ similar = movies[movies.title.isin(same)]
 
 print 'These are movies that have the same titles:\n',similar
 
-print 'The number of movies with similar titles that are actually the same movies, based on the actors list, is', similar.duplicated(['actors_list']).sum() 
+print 'The number of movies with similar titles that are actually the same movies, based on the duration and the actors list, is', similar.duplicated(['duration', 'actors_list']).sum() 
+similar.duplicated(['duration', 'actors_list'])
 
 # calculate the average star rating for each genre, but only include genres with at least 10 movies
 from collections import defaultdict
@@ -92,7 +93,7 @@ BONUS
 '''
 
 # Figure out something "interesting" using the actors data!
-# highest rated movie by genre
+# list of highest-rated movies and the respective ratings by genre in a nested dictionary
 from collections import defaultdict
 m = defaultdict(lambda: defaultdict(list))
 genrelist = list(set(movies.genre))
@@ -101,7 +102,7 @@ i = 0
 for x in genrelist:
     m[genrelist[i]]['top rating'] = round(movies[movies.genre == genrelist[i]].star_rating.max(),1)
     toprating = movies[movies.genre == genrelist[i]].star_rating.max()
-    m[genrelist[i]]['movies'] = movies[(movies.genre == genrelist[i]) & (movies.star_rating == toprating)].title
+    m[genrelist[i]]['movies'] = list(movies[(movies.genre == genrelist[i]) & (movies.star_rating == toprating)].title)
     i = i + 1
     
 m.items()
