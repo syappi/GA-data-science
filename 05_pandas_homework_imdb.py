@@ -6,6 +6,7 @@ Pandas Homework with IMDB data
 BASIC LEVEL
 '''
 import pandas as pd
+import matplotlib.pyplot as plt
 # read in 'imdb_1000.csv' and store it in a DataFrame named movies
 movies = pd.read_csv('imdb_1000.csv')
 
@@ -23,12 +24,23 @@ movies.sort('duration')
 print 'The longest movie is',movies.sort('duration').tail(1).title.values[0]
 print 'The shortest movie is',movies.sort('duration').head(1).title.values[0]
 
+# create a histogram of duration, choosing an "appropriate" number of bins
+movies.duration.plot(kind='hist', bins=[50, 100, 150, 200, 250])
+
+# use a box plot to display that same data
+movies.duration.plot(kind='box')
+
 '''
 INTERMEDIATE LEVEL
 '''
 
 # count how many movies have each of the content ratings
 movies.content_rating.notnull().sum()
+
+# use a visualization to display that same data, including a title and x and y labels
+movies.content_rating.value_counts().plot(kind='bar', title='Bar Plot of Movies by Content Rating')
+plt.xlabel('Content Rating')
+plt.ylabel('Frequency')
 
 # convert the following content ratings to "UNRATED": NOT RATED, APPROVED, PASSED, GP
 movies.content_rating.replace({'NOT RATED': 'UNRATED', 'APPROVED': 'UNRATED', 'PASSED': 'UNRATED', 'GP': 'UNRATED'}, inplace = True)
@@ -47,12 +59,32 @@ movies.content_rating.fillna('UNRATED', inplace=True)
 movies[(movies.duration >= 120)].star_rating.mean()
 movies[(movies.duration < 120)].star_rating.mean()
 
+# use a visualization to detect whether there is a relationship between star rating and duration
+movies.plot(kind='scatter', x='star_rating', y='duration')
+
 # calculate the average duration for each genre
 movies.groupby(movies.genre).star_rating.mean()
 
 '''
 ADVANCED LEVEL
 '''
+# visualize the relationship between content rating and duration
+movies['content_rating'] = movies.content_rating.map({'G': 0, 'PG': 1, 'PG-13': 2, 'R': 3, 'NC-17': 4, 'X': 5})
+movies.plot(kind='scatter', x='content_rating', y='duration')
+
+# determine the top rated movie (by star rating) for each genre, answer in a nested dictionary
+from collections import defaultdict
+m = defaultdict(lambda: defaultdict(list))
+genrelist = list(set(movies.genre))
+i = 0
+
+for x in genrelist:
+    m[genrelist[i]]['top rating'] = round(movies[movies.genre == genrelist[i]].star_rating.max(),1)
+    toprating = movies[movies.genre == genrelist[i]].star_rating.max()
+    m[genrelist[i]]['movies'] = list(movies[(movies.genre == genrelist[i]) & (movies.star_rating == toprating)].title)
+    i = i + 1
+    
+m.items()
 
 # check if there are multiple movies with the same title, and if so, determine if they are the same movie
 movies.title.duplicated().sum()
@@ -93,16 +125,4 @@ BONUS
 '''
 
 # Figure out something "interesting" using the actors data!
-# list of highest-rated movies and the respective ratings by genre in a nested dictionary
-from collections import defaultdict
-m = defaultdict(lambda: defaultdict(list))
-genrelist = list(set(movies.genre))
-i = 0
 
-for x in genrelist:
-    m[genrelist[i]]['top rating'] = round(movies[movies.genre == genrelist[i]].star_rating.max(),1)
-    toprating = movies[movies.genre == genrelist[i]].star_rating.max()
-    m[genrelist[i]]['movies'] = list(movies[(movies.genre == genrelist[i]) & (movies.star_rating == toprating)].title)
-    i = i + 1
-    
-m.items()
