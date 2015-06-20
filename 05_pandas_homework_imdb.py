@@ -43,7 +43,7 @@ plt.xlabel('Content Rating')
 plt.ylabel('Frequency')
 
 # convert the following content ratings to "UNRATED": NOT RATED, APPROVED, PASSED, GP
-movies.content_rating.replace({'NOT RATED': 'UNRATED', 'APPROVED': 'UNRATED', 'PASSED': 'UNRATED', 'GP': 'UNRATED'}, inplace = True)
+movies.content_rating.replace(['NOT RATED', 'APPROVED', 'PASSED', 'GP'], 'UNRATED', inplace = True)
 
 # convert the following content ratings to "NC-17": X, TV-MA
 movies.content_rating.replace({'X': 'NC-17', 'TV-MA': 'NC-17'}, inplace = True)
