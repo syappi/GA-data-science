@@ -69,8 +69,8 @@ movies.groupby(movies.genre).star_rating.mean()
 ADVANCED LEVEL
 '''
 # visualize the relationship between content rating and duration
-movies['content_rating'] = movies.content_rating.map({'G': 0, 'PG': 1, 'PG-13': 2, 'R': 3, 'NC-17': 4, 'X': 5})
-movies.plot(kind='scatter', x='content_rating', y='duration')
+movies.boxplot(column='duration', by='content_rating')
+movies.hist(column='duration', by='content_rating', layout=(8, 2), figsize=(12, 10))
 
 # determine the top rated movie (by star rating) for each genre, answer in a nested dictionary
 from collections import defaultdict
