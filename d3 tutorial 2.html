@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <title>D3 tutorial</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+ 
+    <script>
+    	
+		var data = [10, 20];
+
+		var width = 500;
+		var height = 500;
+
+    	var canvas = d3.select("body")
+    		.append("svg")
+    		.attr("width", width)
+			.attr("height", height)
+			.append("g") // group shapes
+			.attr("transform", "translate(20, 0)") // give margins to container
+
+		var circle1 = canvas.append("circle")
+			.attr("cx", 50)
+			.attr("cy", 100)
+			.attr("r", 25);
+
+		var circle2 = canvas.append("circle")
+			.attr("cx", 50)
+			.attr("cy", 200)
+			.attr("r", 25);
+
+		var circles = canvas.selectAll("circle")
+			.data(data) //existing DOM elements
+			.attr("fill","red")
+			.enter() // placeholder for data not contained by DOM elements
+				.append("circle")
+				.attr("cx", 50)
+				.attr("cy", 50)
+				.attr("fill", "green")
+				.attr("r", 25);
+
+
+    </script>
+    
+</body>
+
+</html>
