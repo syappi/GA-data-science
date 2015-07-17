@@ -41,7 +41,7 @@ Countries excluded from analysis, not net exporters of coffee
 
 exclude = qualifier[qualifier.net_export < 0]
 exclude.reset_index()
-exclude.countries
+df = exclude.set_index(['countries'])
 
 
 """
@@ -50,7 +50,22 @@ and national coffee production data from NationMaster http://www.nationmaster.co
 """
 import pandas as pd
 imports = pd.read_csv('USITC.csv')
+imports = imports[imports['HTS Number'] == 9011100]
 
+"Dropping countries which are not net exporters"
+imports['delete'] = 0
+i=0
+for x in imports['Country']:
+    if (imports.iloc[i,2] in df.index.values) == True:
+        imports.iloc[i,11] = 1
+    else: imports.iloc[i,11] = 0
+    i = i+1
+
+data = imports[imports.delete != 1]
+data = data[data['Custom Value 2014'] != '0']
+data = data.reset_index()
+
+"Preparing X"
 
 national_output = pd.read_csv('national coffee output.csv')
 
