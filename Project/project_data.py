@@ -4,11 +4,45 @@ Importing data from UN COMTRADE to identify countries which are net exporters of
 coffee (non-roasted, non-decaffeinated)
 """
 from urllib2 import Request, urlopen
+import json
+from pandas.io.json import json_normalize
+import pandas as pd
 
 request=Request('http://comtrade.un.org/api/get?ps=2014&fmt=json&px=HS&p=0&r=all&cc=090111')
 response = urlopen(request)
 data = json.loads(response.read())
-data = json_normalize(data['dataset'])
+data = pd.DataFrame(json_normalize(data['dataset']))
+
+countries = data.rtTitle.unique()
+qualifier = pd.DataFrame({'countries': countries, 'import': 0, 'export': 0, 're_export': 0})
+
+i=0
+
+for x in countries:
+    if data[(data.rtTitle == countries[i]) & (data.rgDesc == 'Import')].TradeQuantity.empty == False:
+        qualifier.iloc[i,2] = float(data[(data.rtTitle == countries[i]) & (data.rgDesc == 'Import')].TradeQuantity)
+    else: qualifier.iloc[i,2] = 0    
+    
+    if data[(data.rtTitle == countries[i]) & (data.rgDesc == 'Export')].TradeQuantity.empty == False:
+        qualifier.iloc[i,1] = float(data[(data.rtTitle == countries[i]) & (data.rgDesc == 'Export')].TradeQuantity)
+    else: qualifier.iloc[i,1] = 0
+        
+    if data[(data.rtTitle == countries[i]) & (data.rgDesc == 'Re-Export')].TradeQuantity.empty == False:
+        qualifier.iloc[i,3] = float(data[(data.rtTitle == countries[i]) & (data.rgDesc == 'Re-Export')].TradeQuantity)
+    else: qualifier.iloc[i,3] = 0
+    i=i+1
+
+
+qualifier['net_export'] = qualifier['export'] + qualifier['re_export'] - qualifier['import']
+
+"""
+Countries excluded from analysis, not net exporters of coffee
+"""
+
+exclude = qualifier[qualifier.net_export < 0]
+exclude.reset_index()
+exclude.countries
+
 
 """
 Importing U.S. import data of coffee, downloaded as CSV from USITC http://dataweb.usitc.gov/,
