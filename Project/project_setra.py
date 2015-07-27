@@ -117,11 +117,6 @@ import matplotlib.pyplot as plt
 
 plot_cols = ['Avg Price 2014', 'Avg Price - Percent Change 2011 - 2014', 'Quantity - Percent Change 2011 - 2014', 'Output_million_kg', 'Percent Certified', 'Percent Market Share']
 data = full_data[plot_cols]
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-plot_cols = ['Avg Price 2014', 'Avg Price - Percent Change 2011 - 2014', 'Quantity - Percent Change 2011 - 2014', 'Output_million_kg', 'Percent Certified', 'Percent Market Share']
-data = full_data[plot_cols]
 data.corr()
 sns.heatmap(data.corr())
 sns.pairplot(data, x_vars=['Avg Price 2014', 'Avg Price - Percent Change 2011 - 2014', 'Quantity - Percent Change 2011 - 2014', 'Output_million_kg', 'Percent Certified'], y_vars='Percent Market Share', size=6, aspect=0.7, kind='reg')
