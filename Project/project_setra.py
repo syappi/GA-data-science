@@ -149,7 +149,7 @@ def train_test_rmse(X, y):
     linreg.fit(X_train, y_train)
     y_pred = linreg.predict(X_test)
     scores = cross_val_score(linreg, X, y, cv=10, scoring='mean_squared_error')
-    return np.sqrt(metrics.mean_squared_error(y_test, y_pred)), np.mean(scores)
+    return np.sqrt(metrics.mean_squared_error(y_test, y_pred)), np.mean(np.sqrt(-scores))
 
 train_test_rmse(X, y)
 
@@ -189,4 +189,3 @@ feature_cols = ['Avg Price 2014', 'Avg Price - Percent Change 2011 - 2014', 'Per
 X = full_data[feature_cols]
 train_test_rmse(X, y)
 
-"Regression on Data Points with 'Quantity - Percent Change 2011 - 2014' < +100%'
