@@ -1,0 +1,19 @@
+digraph Tree {
+0 [label="Output_million_kg <= 553.5000\nmse = 31.5379310436\nsamples = 39", shape="box"] ;
+1 [label="Output_million_kg <= 72.7500\nmse = 3.79909294045\nsamples = 36", shape="box"] ;
+0 -> 1 ;
+2 [label="Output_million_kg <= 48.0000\nmse = 0.0863625881934\nsamples = 24", shape="box"] ;
+1 -> 2 ;
+3 [label="mse = 0.0119\nsamples = 19\nvalue = [ 0.06367347]", shape="box"] ;
+2 -> 3 ;
+4 [label="mse = 0.1816\nsamples = 5\nvalue = [ 0.55066687]", shape="box"] ;
+2 -> 4 ;
+5 [label="Quantity - Percent Change 2011 - 2014 <= -31.0500\nmse = 5.3446731369\nsamples = 12", shape="box"] ;
+1 -> 5 ;
+6 [label="mse = 0.1252\nsamples = 3\nvalue = [ 0.44145271]", shape="box"] ;
+5 -> 6 ;
+7 [label="mse = 3.8601\nsamples = 9\nvalue = [ 4.03278074]", shape="box"] ;
+5 -> 7 ;
+8 [label="mse = 54.6858\nsamples = 3\nvalue = [ 19.47249495]", shape="box"] ;
+0 -> 8 ;
+}
