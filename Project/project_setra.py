@@ -193,12 +193,11 @@ train_test_rmse(X, y)
 
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.grid_search import GridSearchCV
-feature_cols = ['Avg Price 2014', 'Quantity - Percent Change 2011 - 2014', 'Output_million_kg']
+feature_cols = ['Avg Price 2014', 'Avg Price - Percent Change 2011 - 2014', 'Quantity - Percent Change 2011 - 2014', 'Output_million_kg', 'Percent Certified']
 X = full_data[feature_cols]
 treereg = DecisionTreeRegressor(random_state=1)
 max_depth_range = range(1, 11)
-leaf_range = range(1, 11)
-param_grid = dict(max_depth=max_depth_range, min_samples_leaf=leaf_range)
+param_grid = dict(max_depth=max_depth_range)
 grid = GridSearchCV(treereg, param_grid, cv=10, scoring='mean_squared_error')
 grid.fit(X, y)
 
@@ -207,18 +206,9 @@ grid.best_estimator_
 
 from sklearn.tree import export_graphviz
 import pydot
-import StringIO
-from sklearn.externals.six import StringIO 
-treeregbest = DecisionTreeRegressor(max_depth=3, min_samples_leaf=3, random_state=1)
+treeregbest = DecisionTreeRegressor(max_depth=5, min_samples_leaf=2, min_samples_split=2, random_state=1)
 treeregbest.fit(X, y)
-export_graphviz(treeregbest, out_file=dot_data, feature_names=feature_cols)
-dot_data = StringIO()
-graph = pydot.graph_from_dot_data(dot_data.getvalue())
-graph.write_pdf("tree_coffee.pdf")
 
 export_graphviz(treeregbest, out_file='tree_coffee.dot', feature_names=feature_cols)
 graph = pydot.graph_from_dot_file('tree_coffee.dot')
 graph.write_png('tree_coffee.png')
-
-from subprocess import check_call
-check_call(['dot','-Tpng','tree_coffee.dot','-o','tree_coffee.png'])
